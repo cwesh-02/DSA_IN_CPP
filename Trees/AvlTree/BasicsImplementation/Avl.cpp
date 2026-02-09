@@ -20,7 +20,14 @@ int GetHeight(Node* root)
     if(!root) return NULL;
     return root->height;
 }
-    
+
+void UpdateHeight(Node* root)
+{
+    int LeftHeight=GetHeight(root->left);
+    int RightHeight=GetHeight(root->right);
+    root->height=1+max(LeftHeight , RightHeight);
+}
+
 Node* RotateRight(Node* root)
 {
     Node* temp = root->left;
@@ -44,7 +51,7 @@ Node* Balance(Node* root)
         return NULL;
     }
 
-    
+
 }
 
 Node* InsertBST(Node* root , int value)
