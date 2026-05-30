@@ -1,0 +1,694 @@
+prims
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int V=4;
+    vector<vector<int>> adj[V];
+    adj[0].push_back({1,3});
+
+    adj[1].push_back({0,3});
+    adj[1].push_back({3,2});
+    adj[1].push_back({2,5});
+
+    adj[2].push_back({1,5});
+    adj[2].push_back({3,9});    
+    
+    adj[3].push_back({1,2});
+    adj[3].push_back({2,9});  
+
+    vector<bool> IsMST(V,0);
+    vector<int> parent(V);
+    int cost =0;
+    
+    priority_queue<pair<int,pair<int,int>> , vector<pair<int,pair<int,int>>> , greater<pair<int,pair<int,int>>>> pq;
+    pq.push({0 , {0,-1}});
+
+    while (!pq.empty())
+    {
+        int node = pq.top().second.first;
+        int wt = pq.top().first;
+        int par = pq.top().second.second;
+        pq.pop();
+        if(!IsMST[node])
+        {
+            IsMST[node]=1;
+            cost+=wt;
+            parent[node]=par;
+        }
+
+        for(int i =0;i<adj[node].size();i++)
+        {
+            if(!IsMST[adj[node][i][0]])
+            {
+                pq.push({adj[node][i][1], {adj[node][i][0] , node}});
+            }
+        }
+
+    }
+
+    cout<<cost;
+    
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int solve(string &s1, string &s2, int i, int j , vector<vector<int>> &dp)
+{
+    // base case
+    if(i == s1.length() || j == s2.length())
+        return 0;
+
+        if(dp[i][j] != -1)
+        return dp[i][j];
+
+    // match case
+    if(s1[i] == s2[j])
+        return 1 + solve(s1, s2, i+1, j+1 , dp);
+
+    // not match
+    return dp[i][j] = max(
+        solve(s1, s2, i+1, j, dp),
+        solve(s1, s2, i, j+1, dp)
+    );
+}
+
+int main()
+{
+    string s1, s2;
+
+    cout << "Enter first string: ";
+    cin >> s1;
+
+    cout << "Enter second string: ";
+    cin >> s2;
+    int n = s1.length();
+    int m = s2.length();
+    vector<vector<int>> dp(n , vector<int>(m,-1));
+
+    cout << "LCS length: " << solve(s1, s2, 0, 0 , dp);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+MERGE SORT
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+void merge(vector<int> &arr , int st , int mid , int end)
+{
+    int i = st;
+    int j = mid+1;
+
+    vector<int> temp;
+
+    while(i<=mid && j<=end)
+    {
+        if(arr[i]<=arr[j])
+        {
+            temp.push_back(arr[i]);
+            i++;
+        }
+
+        else if(arr[i]>arr[j])
+        {
+            temp.push_back(arr[j]);
+            j++;
+        }
+    }
+
+    while(i<=mid)
+        {
+            temp.push_back(arr[i]);
+            i++;            
+        }
+
+        while(j<=end)
+        {
+            temp.push_back(arr[j]);
+            j++;            
+        }
+
+    int k=0;
+    for(int i =st ;i<=end;i++)
+    {
+        arr[i] = temp[k++];
+    }
+
+}
+
+void MS(vector<int> &arr , int st , int end)
+{
+    if(st>=end) return;
+    if(arr.size()==1) return;
+
+    int mid = (st+end)/2;
+
+    MS(arr , st , mid);
+    MS(arr , mid+1 , end);
+    merge(arr , st , mid , end);
+}
+
+int main()
+{
+    vector<int> arr(5);
+    int n =5;
+
+    for(int i =0;i<n;i++)
+    {
+        cout<<"Enter "<<i<<" th"<<" number";
+        cin>>arr[i];
+    }
+
+    MS(arr , 0 , n-1);
+    for(int i =0;i<n;i++)
+    cout<<arr[i]<<" ";
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+Fibbonacci
+
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> dp(1000,-1);
+
+int fib(int n)
+{
+    if(n==0) return 0;
+    if(n==1 || n==2) return 1;
+
+    if(dp[n]!=-1) 
+    {
+        return dp[n];
+    }
+    int ans = fib(n-1)+fib(n-2); 
+    dp[n] = ans;
+    return ans;
+}
+
+int main()
+{
+    int n;
+    cout<<"Enter n";
+    cin>>n;
+
+    cout<<fib(n);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+reverse LL
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+    int data;
+    Node* next;
+
+    Node(int val)
+    {
+        data = val;
+        next = NULL;
+    }
+};
+
+int main()
+{
+    int n ;
+    cout<<"Enter n";
+    cin>>n;
+
+    Node* head=NULL;
+    Node* curr=head;
+
+    for(int i =0;i<n;i++)
+    {
+        int temp;
+        cout<<"Enter Node "<< i+1;
+        cin>>temp;
+
+        if(!head)
+        {
+            head = new Node(temp);
+            curr = head;
+        }
+
+        else
+        {
+        curr->next = new Node(temp);
+        curr=curr->next;
+        }
+    }
+
+    Node* h = head;
+    Node* prev = NULL;
+
+    while(h)
+    {
+        Node* tmp = h->next;
+        h->next = prev;
+        prev = h;
+        h = tmp;
+    }
+
+    while(prev)
+    {
+        cout<<prev->data<<"->";
+        prev = prev -> next;
+    }
+
+    cout<<"NULL";
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+KRUSKAL
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// DSU (Disjoint Set)
+class DSU {
+public:
+    vector<int> parent, rank;
+
+    DSU(int n) {
+        parent.resize(n);
+        rank.resize(n, 0);
+        for (int i = 0; i < n; i++)
+            parent[i] = i;
+    }
+
+    int find(int x) {
+        if (parent[x] != x)
+            parent[x] = find(parent[x]); // path compression
+        return parent[x];
+    }
+
+    void unite(int x, int y) {
+        int px = find(x);
+        int py = find(y);
+
+        if (px == py) return;
+
+        if (rank[px] < rank[py]) {
+            parent[px] = py;
+        } else if (rank[px] > rank[py]) {
+            parent[py] = px;
+        } else {
+            parent[py] = px;
+            rank[px]++;
+        }
+    }
+};
+
+// Edge structure
+struct Edge {
+    int u, v, weight;
+};
+
+// Comparator for sorting edges
+bool cmp(Edge a, Edge b) {
+    return a.weight < b.weight;
+}
+
+int main() {
+    int V, E;
+    cin >> V >> E;
+
+    vector<Edge> edges(E);
+
+    // Input edges
+    for (int i = 0; i < E; i++) {
+        cin >> edges[i].u >> edges[i].v >> edges[i].weight;
+    }
+
+    // Sort edges by weight
+    sort(edges.begin(), edges.end(), cmp);
+
+    DSU dsu(V);
+
+    int totalWeight = 0;
+
+    cout << "Edges in MST:\n";
+
+    for (auto &e : edges) {
+        if (dsu.find(e.u) != dsu.find(e.v)) {
+            dsu.unite(e.u, e.v);
+            cout << e.u << " - " << e.v << " : " << e.weight << endl;
+            totalWeight += e.weight;
+        }
+    }
+
+    cout << "Total Weight of MST: " << totalWeight << endl;
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Quick sort
+
+#include <iostream>
+using namespace std;
+
+// Partition function
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];  // choosing last element as pivot
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+// Quick Sort function
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);  // left part
+        quickSort(arr, pi + 1, high); // right part
+    }
+}
+
+// Print array
+void printArray(int arr[], int n) {
+    for (int i = 0; i < n; i++)
+        cout << arr[i] << " ";
+    cout << endl;
+}
+
+int main() {
+    int arr[] = {10, 7, 8, 9, 1, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    cout << "Original array:\n";
+    printArray(arr, n);
+
+    quickSort(arr, 0, n - 1);
+
+    cout << "Sorted array:\n";
+    printArray(arr, n);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+Bubble sort
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        bool swapped = false;
+
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                swap(arr[j], arr[j + 1]);
+                swapped = true;
+            }
+        }
+
+        if (!swapped) break; // optimization
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+selection sort
+void selectionSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+
+        swap(arr[i], arr[minIndex]);
+    }
+}
+
+
+
+
+
+
+
+
+
+Insertion sort
+
+void insertionSort(int arr[], int n) {
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+
+        arr[j + 1] = key;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Heap Sort
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    priority_queue<int> max_heap;
+    int n;
+    cout<<"Enter size";
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i =0;i<n;i++)
+    {
+        cin>>arr[i];
+        max_heap.push(arr[i]);
+    }
+
+    vector<int> ans;
+    while(!max_heap.empty())
+    {
+        ans.push_back(max_heap.top());
+        max_heap.pop();
+    }
+
+    reverse(ans.begin(),ans.end());
+    for(int i =0;i<n;i++)
+    cout<<ans[i]<<" ";
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+// Function to print optimal parenthesization
+void printOptimal(int i, int j, vector<vector<int>> &bracket, char &name) {
+    if (i == j) {
+        cout << name++;
+        return;
+    }
+
+    cout << "(";
+    printOptimal(i, bracket[i][j], bracket, name);
+    printOptimal(bracket[i][j] + 1, j, bracket, name);
+    cout << ")";
+}
+
+// MCM function
+void matrixChainMultiplication(vector<int> &arr, int n) {
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+    vector<vector<int>> bracket(n, vector<int>(n, 0));
+
+    for (int len = 2; len < n; len++) {
+        for (int i = 1; i < n - len + 1; i++) {
+            int j = i + len - 1;
+            dp[i][j] = INT_MAX;
+
+            for (int k = i; k < j; k++) {
+                int cost = dp[i][k] + dp[k + 1][j] +
+                           arr[i - 1] * arr[k] * arr[j];
+
+                if (cost < dp[i][j]) {
+                    dp[i][j] = cost;
+                    bracket[i][j] = k;
+                }
+            }
+        }
+    }
+
+    cout << "Minimum Multiplication Cost: " << dp[1][n - 1] << endl;
+
+    cout << "Optimal Parenthesization: ";
+    char name = 'A';
+    printOptimal(1, n - 1, bracket, name);
+    cout << endl;
+}
+
+// Main
+int main() {
+    int n;
+    cout << "Enter number of dimensions: ";
+    cin >> n;
+
+    vector<int> arr(n);
+    cout << "Enter dimensions array:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    matrixChainMultiplication(arr, n);
+
+    return 0;
+}
