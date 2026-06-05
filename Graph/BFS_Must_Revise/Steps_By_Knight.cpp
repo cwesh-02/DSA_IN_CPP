@@ -41,7 +41,6 @@ class Solution {
                     q.push({{i+row[k] ,j+col[k]} , step+1});
                 }
             }
-
             
         }
         
