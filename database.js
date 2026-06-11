@@ -1,0 +1,1 @@
+const s ="mongodb+srv://gamingshivesh1122_db_user:Shivesh1122@codingadda.nfdoazu.mongodb.net/"
